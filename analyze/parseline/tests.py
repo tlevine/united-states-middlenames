@@ -48,5 +48,8 @@ class Test242250680(BaseLineTest):
         'died': {'year': 2002, 'month': 11, 'day': 13}, #Missing value
     }
 
+class BaseInvalidLineTest(unittest.TestCase):
+    line = ''
+
 if __name__ == 'main':
     unittest.main()

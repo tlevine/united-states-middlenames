@@ -8,7 +8,7 @@ class BaseLineTest(unittest.TestCase):
         'ssn': '',
         'surname': '',
         'forename': '',
-        'middles': []
+        'middles': [],
         'born': {'year': None, 'month': None, 'day': None},
         'died': {'year': None, 'month': None, 'day': None},
     }
@@ -18,12 +18,12 @@ class BaseLineTest(unittest.TestCase):
         Line validity is something the parser should handle, but
         let's put this in because it might help with debugging.
         '''
-        self.assertEqual(len(self.line), 101)
+        self.assertEqual(len(self.line), 100)
         self.assertEqual(self.line[0], ' ')
-        self.assertEqual(self.line[-1], '\n')
+        self.assertNotEqual(self.line[-1], '\n')
 
     def test_parser(self):
-        self.assertDictEqual(parseline(line), expected_result)
+        self.assertDictEqual(parseline(self.line), self.expected_result)
 
 class Test001010001(BaseLineTest):
     'This is the first one! It has a missing value.'
@@ -32,7 +32,7 @@ class Test001010001(BaseLineTest):
         'ssn': '001010001',
         'surname': 'MUZZEY',
         'forename': 'GRACE',
-        'middles': []
+        'middles': [],
         'born': {'year': 1902, 'month': 4, 'day': 16},
         'died': {'year': 1975, 'month': 12, 'day': None}, #Missing value
     }
@@ -43,7 +43,7 @@ class Test242250680(BaseLineTest):
         'ssn': '242250680',
         'surname': 'TATE',
         'forename': 'RONNIE',
-        'middles': ['D', 'V']
+        'middles': ['D', 'V'],
         'born': {'year': 1957, 'month': 11, 'day': 16},
         'died': {'year': 2002, 'month': 11, 'day': 13}, #Missing value
     }
@@ -51,5 +51,5 @@ class Test242250680(BaseLineTest):
 class BaseInvalidLineTest(unittest.TestCase):
     line = ''
 
-if __name__ == 'main':
+if __name__ == '__main__':
     unittest.main()

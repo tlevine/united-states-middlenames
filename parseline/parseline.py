@@ -11,7 +11,7 @@ DATE_COMPONENTS =  {
 }
 
 SSN = re.compile(r'^[0-9]+$')
-NAMES = re.compile(r'''^[A-Z0-9 '-.,/&]+$''')
+NAMES = re.compile(r'''^[A-Z0-9 '-.,]+$''')
 DATETIMES = re.compile(r'^[0-9]+$')
 LINELENGTH = 100
 
@@ -61,19 +61,22 @@ def _parsedate(datestring):
     return result
 
 def parseline(line):
+    'Parse a line of the death file.'
+    doc = {}
+
     # First, check that it looks like a valid line.
-    is_line_valid(line)
+    doc['errors'] = is_line_valid(line)
 
     # Then parse it.
-    doc = {}
     doc['ssn'] = line[1:10]
-    try:
-        doc['born'] = _parsedate(line[73:81])
-        doc['died'] = _parsedate(line[65:73])
-    except ValueError, msg:
-        doc['parse_errors'] = True
-        print msg
-        print line
+
+    for key, indices in [('bord', (73, 81)), ('died', (65, 73))]:
+        try:
+            doc[key] = _parsedate(line.__getslice__(indices))
+        except ValueError, msg:
+            doc['parse_errors'].append(msg) 
+            print msg
+            print line
 
     names = filter(None, line[10:65].split(' '))
     if names[0][-1] == ',':
@@ -85,7 +88,7 @@ def parseline(line):
     doc['middles'] = names[2:]
     return doc
 
-def is_line_valid(line):
+def check_line(line):
     # White space
     padding0 = line[0]
     padding1 = line[81:]
@@ -93,20 +96,23 @@ def is_line_valid(line):
     names = line[10:65]
     datetimes = line[65:81]
 
+    errors = []
     if padding0 != ' ':
-        raise ValueError('The first character is "%s" instead of a space.' % padding0)
+        errors.append('The first character is "%s" instead of a space.' % padding0)
 
     if set(padding1) != SPACES:
-        raise ValueError('The right side margin/padding is wrong for SSN %s.' % ssn)
+        errors.append('The right side margin/padding is wrong for SSN %s.' % ssn)
 
     if not re.match(SSN, ssn):
-        raise ValueError('"%s" doesn\'t look like a social security number.' % ssn)
+        errors.append('"%s" doesn\'t look like a social security number.' % ssn)
         
     if not re.match(NAMES, names):
-        raise ValueError('Something\'s wrong with this name: %s.' % names)
+        errors.append('Something\'s wrong with this name: %s.' % names)
 
     if not re.match(DATETIMES, datetimes):
-        raise ValueError('Something\'s wrong with the datetimes.')
+        errors.append('Something\'s wrong with the datetimes.')
 
     if not len(line) == LINELENGTH:
-        raise ValueError('The line is %d characters long instead of %d' % (len(line), LINELENGTH))
+        errors.append('The line is %d characters long instead of %d' % (len(line), LINELENGTH))
+
+    return errors

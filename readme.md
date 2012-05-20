@@ -84,7 +84,7 @@ day of the month. This is equivalent to the middle day of the month
 rounded down, except for February, where it is the day after the middle
 day, rounded down. Also, the days of the week will be missing.
 
-    ssn,       born.date,  died.date,  born.dow, died.dow, born.doy,   died.doy,   state, forename, surname, middles, middles.count
-    123456789, 1930-02-15, 1978-03-15, NA,       NA,       2000-02-15, 2000-03-15, KY,    Mohommad, Lee,     N,       1,
+    ssn,       born.date,  died.date,  born.dow, died.dow, born.doy,   died.doy,   state, forename, surname, middles, middles.count, funny.name
+    123456789, 1930-02-15, 1978-03-15, NA,       NA,       2000-02-15, 2000-03-15, KY,    Mohommad, Lee,     N,       1,             FALSE
 
-
+"funny.name" is whether the name contains characters other than `[A-Z ',.]`

@@ -11,7 +11,7 @@ DATE_COMPONENTS =  {
 }
 
 SSN = re.compile(r'^[0-9]+$')
-NAMES = re.compile(r'^[A-Z-. ]+$')
+NAMES = re.compile(r'''^[A-Z-0-9'. ]+$''')
 DATETIMES = re.compile(r'^[0-9]+$')
 LINELENGTH = 100
 
@@ -55,7 +55,7 @@ def _parsedate(datestring):
                 result.update({'year': components['year'], 'month': components['month']})
 
         else:
-            print datestring
+            #print datestring
             raise ValueError('This date string is too weird.')
 
     return result
@@ -67,8 +67,14 @@ def parseline(line):
     # Then parse it.
     doc = {}
     doc['ssn'] = line[1:10]
-    doc['born'] = _parsedate(line[73:81])
-    doc['died'] = _parsedate(line[65:73])
+    try:
+        doc['born'] = _parsedate(line[73:81])
+        doc['died'] = _parsedate(line[65:73])
+    except ValueError, msg:
+        if msg == 'This date string is too weird.':
+            doc['errors'] = ['Date string(s)']
+        else:
+            raise
 
     names = filter(None, line[10:65].split(' '))
     doc['surname'] = names[0]

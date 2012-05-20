@@ -43,10 +43,12 @@ These features are
 * Age
 * Location of registration (based on SSN)
 
-#### Name
-
 ### Simple transformations
+
+#### Name
 Surn-middle-forename pairs are collected indexed by each other, so there's a
 surname collection that has counts of middle and forenames by surname, a
 middlenames collection that has counts of sur and forenames by middlenames field
 and a forename collection that has counts of surnames by forename.
+
+#### State

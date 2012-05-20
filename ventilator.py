@@ -11,4 +11,4 @@ sender.bind("tcp://*:5557")
 
 # Send out all of the document _ids
 for doc in db.deathfile.find():
-    sender.send(doc['_id'])
+    sender.send(str(doc['_id']))

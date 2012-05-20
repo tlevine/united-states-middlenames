@@ -21,6 +21,9 @@ Data are stored inside a MongoDB, in a collection called `middlenames`.
 Jobs are distributed across computers on a local network, and results
 are sent back to the MongoDB.
 
+But I think I'm going to put them in MySQL, actually, because that
+will be easier to load into R.
+
 This particular network is composed of cheap computers connected by
 100Mbps ethernet. The computer running Mongo has relatively a lot of RAM.
 

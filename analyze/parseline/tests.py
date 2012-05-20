@@ -49,7 +49,38 @@ class Test242250680(BaseLineTest):
     }
 
 class BaseInvalidLineTest(unittest.TestCase):
-    line = ''
+    def test_padding0(self):
+        with self.assertRaises(ValueError):
+            parseline('242250680TATE                    RONNIE         D              V1113200211161957                   ')
+
+    def test_padding0(self):
+        with self.assertRaises(ValueError):
+            parseline('242250680TATE                    RONNIE         D              V1113200211161957                   ')
+
+    def test_ssn(self):
+        with self.assertRaises(ValueError):
+            parseline(' 9 2250680TATE                    RONNIE         D              V1113200211161957                   ')
+
+    def test_names(self):
+        with self.assertRaises(ValueError):
+            parseline(' 242250680TATE                    Ronnie         D              V1113200211161957                   ')
+        with self.assertRaises(ValueError):
+            parseline(' 242250680TATE            6       RONNIE         D              V1113200211161957                   ')
+        with self.assertRaises(ValueError):
+            parseline(' 242250680TATE                     RONNIE         D              V1113200211161957                   ')
+
+    def test_datetimes(self):
+        with self.assertRaises(ValueError):
+            parseline(' 242250680TATE                    RONNIE         D              V13132002111619572                  ')
+
+    def test_padding1(self):
+        with self.assertRaises(ValueError):
+            parseline(' 242250680TATE                    RONNIE         D              V1113200211161957          _        ')
+
+    def test_length(self):
+        with self.assertRaises(ValueError):
+            parseline(' 242250680TATE                    RONNIE         D              V1113200211161957                      ')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -33,19 +33,24 @@ def parseline(line):
     doc['middles'] = names[2:]
     return doc
 
-SSN = re.compile(r'[0-9]+')
-NAMES = re.compile(r'[A-Z ]+')
-DATETIMES = re.compile(r'[0-9]+')
+SSN = re.compile(r'^[0-9]+$')
+NAMES = re.compile(r'^[A-Z ]+$')
+DATETIMES = re.compile(r'^[0-9]+$')
+LINELENGTH = 100
 
 def is_line_valid(line):
     # White space
     padding0 = line[0]
+    padding1 = line[81:]
     ssn = line[1:10]
     names = line[10:65]
     datetimes = line[65:81]
 
     if padding0 != ' ':
         raise ValueError('The first character is "%s" instead of a space.' % padding0)
+
+    if set(padding1) != set(' '):
+        raise ValueError('The right side margin/padding is wrong.')
 
     if not re.match(SSN, ssn):
         raise ValueError('"%s" doesn\'t look like a social security number.' % ssn)
@@ -55,3 +60,6 @@ def is_line_valid(line):
 
     if not re.match(DATETIMES, datetimes):
         raise ValueError('Something\'s wrong with the datetimes.')
+
+    if not len(line) == LINELENGTH:
+        raise ValueError('The line is %d characters long instead of %d' % (len(line), LINELENGTH))

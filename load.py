@@ -8,7 +8,14 @@ db = connection.middlenames
 def load():
     'Go throug all of the files and import everything.'
     for filepart in range(1, 4):
-        f = open('deathfile/ssdm%d' % filepart, 'r')
+        def o(prefix):
+            return open('deathfile/ssdm%d' % filepart, 'r')
+
+        try:
+            f = o('~/ramdisk/') # From the ramdisk
+        except IOError:
+            f = o('') #From the hard disk
+
         for line in f:
             loadline(line)
 

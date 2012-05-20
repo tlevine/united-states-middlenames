@@ -100,10 +100,11 @@ def parseline(line):
         doc[key], errors = _parsedate(line.__getslice__(*indices))
         doc['parse_errors'].extend(errors)
 
-    names = filter(None, line[10:65].split(' '))
+    namesstring = line[10:65]
+    names = filter(None, namesstring.split(' '))
 
     # Does the name have weird characters?
-    doc['funny_names'] = not bool(re.match(FUNNYNAMES, names))
+    doc['funny_names'] = not bool(re.match(FUNNYNAMES, namesstring))
 
     if names[0][-1] == ',':
         doc['suffix'] = names.pop(1) # Remove the suffix

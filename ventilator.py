@@ -1,7 +1,6 @@
 #!/usr/bin/env python2
 from pymongo import Connection
 import zmq
-import json
 
 connection = Connection()
 db = connection.middlenames

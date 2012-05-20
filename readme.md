@@ -1,6 +1,10 @@
 United States Middle Names
 =================
 
+I want to know what proportion of people have middle names
+and how this varies by time and location? In considering "time",
+I want to consider time within cycles like years.
+
 ### Raw data
 Get Social Security Death Master File for free
 

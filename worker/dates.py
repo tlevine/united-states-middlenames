@@ -9,19 +9,19 @@ def process_date(datedict, datetype):
     keys = set(datedict.keys())
     if keys == {'year', 'month', 'day'}:
         out = {
-            datetype + '.date': datetime.date(date['year'], date['month'], date['day']),
+            datetype + '.date': datetime.date(datedict'year'], datedict'month'], datedict'day']),
             datetype + '.dow': out[datetype + '.date'].strftime('%a'),
         #   datetype + '.doy': None,
         }
     elif keys == {'month', 'year'}:
         out = {
-            datetype + '.date': datetime.date(date['year'], date['month'], 15),
+            datetype + '.date': datetime.date(datedict'year'], datedict'month'], 15),
         #   datetype + '.dow': None,
             datetype + '.doy': out[datetype + '.date'].strftime('%j'),
         }
     elif keys == {'month', 'day'}:
         out = {
-            datetype + '.date': datetime.date(2000, date['month'], date['day']),
+            datetype + '.date': datetime.date(2000, datedict'month'], datedict'day']),
         #   datetype + '.dow': None,
             datetype + '.doy': out[datetype + '.date'].strftime('%j'),
         }

@@ -4,7 +4,8 @@ from parseline import parseline
 
 def load():
     'Go throug all of the files and import everything.'
-    for filepart in range(1, 4):
+    for filepart in range(2, 4):
+    #for filepart in range(1, 4):
         f = open('deathfile/ssdm%d' % filepart, 'r')
         for line in f:
             loadline(line)

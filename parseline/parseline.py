@@ -55,7 +55,22 @@ def _parsedate(datestring):
                 result.update({'year': components['year'], 'month': components['month']})
 
         else:
-            msg = 'This date string is too weird: {year:04}-{month:02}-{day:02}'.format(**components)
+            try:
+                # Is it the day after the last day?
+                date = datetime.date(components['year'], components['month'], components['day'] - 1)
+            except:
+                msg = 'The day is one day after the end of the month' +\
+                     ' so I used the last day of the month.'
+
+                result.update({
+                    'year': components['year'],
+                    'month': components['month'],
+                    'day': components['day'] - 1,
+                })
+            else:
+                msg = 'This date string is too weird: ' +\
+                    '{year:04}-{month:02}-{day:02}'.format(**components)
+
             raise ValueError(msg)
 
     return result

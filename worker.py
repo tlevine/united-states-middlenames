@@ -1,15 +1,10 @@
-# Task worker
-# Connects PULL socket to tcp://localhost:5557
-# Collects workloads from ventilator via that socket
-# Connects PUSH socket to tcp://localhost:5558
-# Sends results to sink via that socket
-#
-# Author: Lev Givon <lev(at)columbia(dot)edu>
-
+#!/usr/bin/env python2
 import zmq
 import json
 
 import datetime
+
+from ssn_locations import ssn_to_state
 
 context = zmq.Context()
 receiver = context.socket(zmq.PULL)
@@ -21,10 +16,13 @@ def process(deathfile_doc):
         'born.date': 
     }
 
-#   ssn,       born.date, died.date, born.dow, died.dow, born.doy,   died.doy,   state, forename, surname, middles, middles.count
-    
     for datetype in ['born', 'died']:
         watermelon_doc.update(process_date(deathfile_doc[datetype], datetype))
+
+    watermelon_doc['state'] = ssn_to_state(deathfile_doc['ssn'])
+    watermelon_doc['middles.count'] = len(deathfile_doc['middles'])
+
+    return watermelon_doc
 
 def process_date(datedict, datetype)
     '''

@@ -45,7 +45,7 @@ collection, which is indexed on SSN.
 These features are
 * Number of middle names/initials
 * Age
-* Location of registration (based on SSN)
+* [Location of registration](https://www.eff.org/Privacy/ID_SSN_fingerprinting/ssn_structure.article)
 
 ### Simple transformations
 

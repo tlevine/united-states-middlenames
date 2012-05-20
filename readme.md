@@ -61,5 +61,10 @@ and a forename collection that has counts of surnames by forename.
 ### Resulting table
 This all leads to a table like this.
 
-    ssn,       state, born.date,  died.date,
-    123456789, KY,    1930-02-10, 1978-03-07,
+    ssn,       state, born.date,  died.date,  born.dow, died.dow, born.doy,   died.doy,
+    123456789, KY,    1930-02-10, 1978-03-07, mon,      tue,      2000-02-10, 2000-03-07,
+
+"dow" refers to "day of week". "doy" refers to "day of year", but
+it's just the date switched to a stardard leap year like so (in R).
+
+    doy <- as.POSIXct(paste('2000', substring('1999-02-28', 5), sep=''))

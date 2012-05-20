@@ -21,23 +21,22 @@ def process(deathfile_doc):
         watermelon_doc.update(process_date(deathfile_doc[datetype], datetype))
 
     watermelon_doc['state'] = ssn_to_state(deathfile_doc['ssn'])
-    watermelon_doc['middles.count'] = len(deathfile_doc['middles'])
+    watermelon_doc['middles_count'] = len(deathfile_doc['middles'])
 
-    print(watermelon_doc)
     return watermelon_doc
-import time
 
 while True:
     # Get the document
     _id = str(receiver.recv(), 'utf-8')
     doc = db.deathfile.find_one({'_id': _id})
 
-    # Skip if we've already done this batch of processing.
-    watermelon = doc.get('watermelon', {})
-    if watermelon != {}:
-        continue # Already processed
+#   # Skip if we've already done this batch of processing.
+#   watermelon = doc.get('watermelon', {})
+#   if watermelon != {}:
+#       continue # Already processed
 
-    # Otherwise, process it
-    command = {'watermelon': process(doc)}
-    db.deathfile.update({'_id': doc['_id']}, command)
-    time.sleep(1)
+#   # Otherwise, process it
+#   command = {'watermelon': process(doc)}
+#   db.deathfile.update({'_id': doc['_id']}, command)
+
+    db.watermelon.save(process(doc))

@@ -18,23 +18,23 @@ def process_date(datedict, datetype):
     if keys == {'year', 'month', 'day'}:
         date = datetime.datetime(datedict['year'], datedict['month'], datedict['day'])
         out = {
-            datetype + '.date': date,
-            datetype + '.dow': date.strftime('%a'),
-            datetype + '.doy': date.strftime('%j'),
+            datetype + '_date': date,
+            datetype + '_dow': date.strftime('%a'),
+            datetype + '_doy': date.strftime('%j'),
         }
     elif keys == {'month', 'year'}:
         date = datetime.datetime(datedict['year'], datedict['month'], 15)
         out = {
-            datetype + '.date': date, 
-        #   datetype + '.dow': None,
-        #   datetype + '.doy': None,
+            datetype + '_date': date, 
+        #   datetype + '_dow': None,
+        #   datetype + '_doy': None,
         }
     elif keys == {'month', 'day'}:
         date = datetime.datetime(2000, datedict['month'], datedict['day'])
         out = {
-            datetype + '.date': date,
-        #   datetype + '.dow': None,
-            datetype + '.doy': date.strftime('%j'),
+            datetype + '_date': date,
+        #   datetype + '_dow': None,
+            datetype + '_doy': date.strftime('%j'),
         }
     else:
         out = {}

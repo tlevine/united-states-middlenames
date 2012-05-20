@@ -95,7 +95,7 @@ def parseline(line):
     # Then parse it.
     doc['ssn'] = line[1:10]
 
-    for key, indices in [('bord', (73, 81)), ('died', (65, 73))]:
+    for key, indices in [('born', (73, 81)), ('died', (65, 73))]:
         doc[key], errors = _parsedate(line.__getslice__(*indices))
         doc['parse_errors'].extend(errors)
 

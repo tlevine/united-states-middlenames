@@ -8,25 +8,29 @@ def process_date(datedict, datetype):
 
     keys = set(datedict.keys())
     if keys == {'year', 'month', 'day'}:
+        date = datetime.date(datedict['year'], datedict['month'], datedict['day'])
         out = {
-            datetype + '.date': datetime.date(datedict['year'], datedict['month'], datedict['day']),
-            datetype + '.dow': out[datetype + '.date'].strftime('%a'),
-        #   datetype + '.doy': None,
+            datetype + '.date': date,
+            datetype + '.dow': date.strftime('%a'),
+            datetype + '.doy': date.strftime('%j'),
         }
     elif keys == {'month', 'year'}:
+        date = datetime.date(datedict['year'], datedict['month'], 15)
         out = {
-            datetype + '.date': datetime.date(datedict['year'], datedict['month'], 15),
+            datetype + '.date': date, 
         #   datetype + '.dow': None,
-            datetype + '.doy': out[datetype + '.date'].strftime('%j'),
+        #   datetype + '.doy': None,
         }
     elif keys == {'month', 'day'}:
+        date = datetime.date(2000, datedict['month'], datedict['day'])
         out = {
-            datetype + '.date': datetime.date(2000, datedict['month'], datedict['day']),
+            datetype + '.date': date,
         #   datetype + '.dow': None,
-            datetype + '.doy': out[datetype + '.date'].strftime('%j'),
+            datetype + '.doy': date.strftime('%j'),
         }
     else:
         out = {}
 
+    print out
     return out
 

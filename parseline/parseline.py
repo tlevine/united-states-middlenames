@@ -80,6 +80,9 @@ def _parsedate(datestring):
 
             errors.append(msg)
 
+#   if errors != []:
+#       print errors
+
     return result, errors
 
 def parseline(line):

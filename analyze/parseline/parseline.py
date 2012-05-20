@@ -18,6 +18,10 @@ def _parsedate(datestring):
     return result
 
 def parseline(line):
+    # First, check that it looks like a valid line.
+    is_line_valid(line)
+
+    # Then parse it.
     doc = {}
     doc['ssn'] = line[1:10]
     doc['born'] = _parsedate(line[73:81])
@@ -29,22 +33,25 @@ def parseline(line):
     doc['middles'] = names[2:]
     return doc
 
-class TestLine(TestCase):
-    line = ' 001010001MUZZEY                  GRACE                          1200197504161902                   '
+SSN = re.compile(r'[0-9]+')
+NAMES = re.compile(r'[A-Z ]+')
+DATETIMES = re.compile(r'[0-9]+')
 
-    def test_padding(self):
-        padding0 = self.line[0]
-        self.assertEqual(padding0, ' ')
+def is_line_valid(line):
+    # White space
+    padding0 = line[0]
+    ssn = line[1:10]
+    names = line[10:65]
+    datetimes = line[65:81]
 
-    def test_ssn(self):
-        'Is the SSN column what we expect?'
-        ssn = self.line[1:10]
-        self.assertRegexpMatches(ssn, r'[0-9]+')
+    if padding0 != ' ':
+        raise ValueError('The first character is "%s" instead of a space.' % padding0)
 
-    def test_name(self):
-        name = self.line[10:65]
-        self.assertRegexpMatches(name, r'[A-Z ]+')
+    if not re.match(SSN, ssn):
+        raise ValueError('"%s" doesn\'t look like a social security number.' % ssn)
+        
+    if not re.match(NAMES, names):
+        raise ValueError('Something\'s wrong with the name.')
 
-    def test_dates(self):
-        deathdatetime = self.line[65:81]
-        self.assertRegexpMatches(deathdatetime, r'[0-9]+')
+    if not re.match(DATETIMES, datetimes):
+        raise ValueError('Something\'s wrong with the datetimes.')

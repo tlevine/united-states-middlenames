@@ -23,7 +23,9 @@ def process(deathfile_doc):
     watermelon_doc['state'] = ssn_to_state(deathfile_doc['ssn'])
     watermelon_doc['middles.count'] = len(deathfile_doc['middles'])
 
+    print(watermelon_doc)
     return watermelon_doc
+import time
 
 while True:
     # Get the document
@@ -36,5 +38,6 @@ while True:
         continue # Already processed
 
     # Otherwise, process it
-    command = {'$set': {'watermelon': process(doc)}}
-    db.deathfile.update({'ssn': doc['ssn']}, command)
+    command = {'watermelon': process(doc)}
+    db.deathfile.update({'_id': doc['_id']}, command)
+    time.sleep(1)

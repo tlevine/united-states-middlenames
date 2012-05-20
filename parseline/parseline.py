@@ -65,7 +65,7 @@ def parseline(line):
     doc = {}
 
     # First, check that it looks like a valid line.
-    doc['errors'] = is_line_valid(line)
+    doc['parse_errors'] = is_line_valid(line)
 
     # Then parse it.
     doc['ssn'] = line[1:10]

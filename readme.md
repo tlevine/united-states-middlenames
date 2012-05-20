@@ -28,7 +28,25 @@ It doesn't try to be fast because it's loading from the same three
 files; once they're in the database, everything will be faster.
 
 ### Features
-`features.py` extracts some features for each dead person. Records
-are distributed across many workers via ZeroMQ. Results are sent back
-into the database in a collection called `personfeatures`, which is
-also indexed on SSN.
+Features for each dead person. Records are distributed across many workers
+via ZeroMQ. Results are sent back into the database in a new collection.
+The collection is named based on the statistical unit of the features--whether
+they are at the person level, year level, &c.; you can also think of this
+as the field on which they are uniquely indexed.
+
+#### Personal
+Person-level features are extracted and stored them in the `personfeatures`
+collection, which is indexed on SSN.
+
+These features are
+* Number of middle names/initials
+* Age
+* Location of registration (based on SSN)
+
+#### Name
+
+### Simple transformations
+Surn-middle-forename pairs are collected indexed by each other, so there's a
+surname collection that has counts of middle and forenames by surname, a
+middlenames collection that has counts of sur and forenames by middlenames field
+and a forename collection that has counts of surnames by forename.

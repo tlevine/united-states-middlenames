@@ -11,7 +11,7 @@ DATE_COMPONENTS =  {
 }
 
 SSN = re.compile(r'^[0-9]+$')
-NAMES = re.compile(r'''^[A-Z0-9 '&-.,]+$''')
+NAMES = re.compile(r'''^[A-Z0-9 '-.,/&]+$''')
 DATETIMES = re.compile(r'^[0-9]+$')
 LINELENGTH = 100
 
@@ -19,14 +19,14 @@ SPACES = set(' ')
 
 def _parsedate(datestring):
     'Parse a date in the format that the death file uses.'
+    result = {'year': None, 'month': None, 'day': None}
+    components = {k: int(datestring.__getslice__(*DATE_COMPONENTS[k])) for k in DATE_COMPONENTS.keys()}
+
     try:
         # All is well.
-        date = datetime.datetime.strptime(datestring, '%m%d%Y').date()
+        date = datetime.date(components['year'], components['month'], components['day'])
         result = {'year': date.year, 'month': date.month, 'day': date.day}
     except ValueError:
-        result = {'year': None, 'month': None, 'day': None}
-        components = {k: int(datestring.__getslice__(*DATE_COMPONENTS[k])) for k in DATE_COMPONENTS.keys()}
-
         if components.values() == [0, 0, 0]:
             # All components missing
             pass
@@ -50,7 +50,7 @@ def _parsedate(datestring):
             try:
                 datetime.date(components['year'], components['month'], 1)
             except ValueError:
-                pass
+                raise
             else:
                 result.update({'year': components['year'], 'month': components['month']})
 

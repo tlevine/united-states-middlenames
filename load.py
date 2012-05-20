@@ -12,7 +12,7 @@ def load():
             return open('deathfile/ssdm%d' % filepart, 'r')
 
         try:
-            f = o('~/ramdisk/') # From the ramdisk
+            f = o('/tmp/') # From the ramdisk
         except IOError:
             f = o('') #From the hard disk
 

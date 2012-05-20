@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 from db import db
 from parseline import parseline
 
@@ -11,7 +12,7 @@ def load():
 def loadline(line):
     'Save a particular line to the database.'
     if line[-1] == '\n':
-        del(line[-1])
+        line = line[:-1]
     doc = parseline(line)
     doc['_id'] = doc['ssn']
     db.deathfile.insert(doc)

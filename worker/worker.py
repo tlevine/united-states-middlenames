@@ -27,8 +27,9 @@ def process(deathfile_doc):
 
 while True:
     # Get the document
-    _id = receiver.recv()
+    _id = str(receiver.recv(), 'utf-8')
     doc = db.deathfile.find_one({'_id': _id})
+    print(doc)
 
     # Skip if we've already done this batch of processing.
     watermelon = doc.get('watermelon', {})
@@ -38,3 +39,4 @@ while True:
     # Otherwise, process it
     command = {'$set': {'watermelon': process(doc)}}
     db.deathfile.update({'ssn': doc['ssn']}, command)
+    print(doc)

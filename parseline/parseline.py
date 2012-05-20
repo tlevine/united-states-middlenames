@@ -65,16 +65,16 @@ def parseline(line):
     doc = {}
 
     # First, check that it looks like a valid line.
-    doc['parse_errors'] = is_line_valid(line)
+    doc['parse_errors'] = check_line(line)
 
     # Then parse it.
     doc['ssn'] = line[1:10]
 
     for key, indices in [('bord', (73, 81)), ('died', (65, 73))]:
         try:
-            doc[key] = _parsedate(line.__getslice__(indices))
+            doc[key] = _parsedate(line.__getslice__(*indices))
         except ValueError, msg:
-            doc['parse_errors'].append(msg) 
+            doc['parse_errors'].append(str(msg))
             print msg
             print line
 
@@ -83,8 +83,16 @@ def parseline(line):
         doc['suffix'] = names.pop(1) # Remove the suffix
         names[0] = names[0][:-1] # Remove the comma.
 
-    doc['surname'] = names[0]
-    doc['forename'] = names[1]
+    if len(names) > 0:
+        doc['surname'] = names[0]
+    else:
+        doc['parse_errors'].append('No surname')
+
+    if len(names) > 1:
+        doc['forename'] = names[1]
+    else:
+        doc['parse_errors'].append('No forename')
+
     doc['middles'] = names[2:]
     return doc
 

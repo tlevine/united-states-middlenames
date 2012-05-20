@@ -1,6 +1,6 @@
 import datetime
 
-def process_date(datedict, datetype)
+def process_date(datedict, datetype):
     '''
     Convert a date dictionary into date, day of week
     and day of year, handling missing values.

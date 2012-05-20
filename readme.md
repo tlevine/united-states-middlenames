@@ -3,7 +3,7 @@ United States Middle Names
 
 I want to know what proportion of people have middle names
 and how this varies by time and location? In considering "time",
-I want to consider time within cycles like years.
+I want to consider both raw time and time within cycles.
 
 ### Raw data
 Get Social Security Death Master File for free
@@ -56,3 +56,10 @@ middlenames collection that has counts of sur and forenames by middlenames field
 and a forename collection that has counts of surnames by forename.
 
 #### State
+
+
+### Resulting table
+This all leads to a table like this.
+
+    ssn,       state, born.date,  died.date,
+    123456789, KY,    1930-02-10, 1978-03-07,

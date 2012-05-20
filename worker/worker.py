@@ -1,13 +1,16 @@
 #!/usr/bin/env python2
 import zmq
-import json
+from pymongo import Connection
 
 from ssn_locations import ssn_to_state
 from dates import process_dates
 
 context = zmq.Context()
 receiver = context.socket(zmq.PULL)
-receiver.connect("tcp://localhost:5557")
+receiver.connect("tcp://desk:5557")
+
+connection = Connection()
+db = connection.middlenames
 
 def process(deathfile_doc):
     watermelon_doc = {

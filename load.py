@@ -1,6 +1,9 @@
 #!/usr/bin/env python2
-from db import db
+from pymongo import Connection
 from parseline import parseline
+
+connection = Connection()
+db = connection.middlenames
 
 def load():
     'Go throug all of the files and import everything.'

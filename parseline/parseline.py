@@ -16,7 +16,6 @@ DATETIMES = re.compile(r'^[0-9]+$')
 LINELENGTH = 100
 
 SPACES = set(' ')
-ZEROES = set('0')
 
 def _parsedate(datestring):
     'Parse a date in the format that the death file uses.'
@@ -26,26 +25,34 @@ def _parsedate(datestring):
         result = {'year': date.year, 'month': date.month, 'day': date.day}
     except ValueError:
         result = {'year': None, 'month': None, 'day': None}
-        d = {k: int(datestring.__getslice__(*DATE_COMPONENTS[k])) for k in DATE_COMPONENTS.keys()}
-        zeroes = {k: set(v) == ZEROES for k, v in d}
+        components = {k: int(datestring.__getslice__(*DATE_COMPONENTS[k])) for k in DATE_COMPONENTS.keys()}
 
-        if zeroes.values() == [True]*3:
+        if components.values() == [0, 0, 0]:
             # All components missing
             pass
 
-        elif (not zeroes['year']) and zeroes['month'] and not zeroes['day']:
+        elif components['year'] and (not components['month']) and (not components['day']):
             # Only year available
-            if d['year'] > 1800:
-                result['year'] = d['year']
+            if components['year'] > 1800:
+                result['year'] = components['year']
 
-        elif zeroes['year'] and (not zeroes['month']) and (not zeroes['day']):
+        elif (not components['year']) and components['month'] and components['day']:
             # Only year missing
             try:
-                datetime.date(1900, d['month'], d['day']):
+                datetime.date(1900, components['month'], components['day'])
             except ValueError:
                 pass
             else:
-                result.update({'month': d['month', 'day': d['day']})
+                result.update({'month': components['month'], 'day': components['day']})
+
+        elif components['year'] and components['month'] and (not components['day']):
+            # Only day missing
+            try:
+                datetime.date(components['year'], components['month'], 1)
+            except ValueError:
+                pass
+            else:
+                result.update({'year': components['year'], 'month': components['month']})
 
         else:
             print datestring
@@ -81,13 +88,13 @@ def is_line_valid(line):
         raise ValueError('The first character is "%s" instead of a space.' % padding0)
 
     if set(padding1) != SPACES:
-        raise ValueError('The right side margin/padding is wrong.')
+        raise ValueError('The right side margin/padding is wrong for SSN %s.' % ssn)
 
     if not re.match(SSN, ssn):
         raise ValueError('"%s" doesn\'t look like a social security number.' % ssn)
         
     if not re.match(NAMES, names):
-        raise ValueError('Something\'s wrong with the name.')
+        raise ValueError('Something\'s wrong with this name: %s.' % names)
 
     if not re.match(DATETIMES, datetimes):
         raise ValueError('Something\'s wrong with the datetimes.')

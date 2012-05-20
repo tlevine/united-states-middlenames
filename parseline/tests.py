@@ -48,6 +48,17 @@ class Test242250680(BaseLineTest):
         'died': {'year': 2002, 'month': 11, 'day': 13}, #Missing value
     }
 
+class Test001014420(BaseLineTest):
+    line = ' 001014420DENSMORE-PHI            ELEANOR                       V1101200209021915                   '
+    expected_result = {
+        'ssn': '001014420',
+        'surname': 'DENSMORE-PHI',
+        'forename': 'ELEANOR',
+        'middles': ['V'],
+        'born': {'year': 1915, 'month':  9, 'day': 2},
+        'died': {'year': 2002, 'month': 11, 'day': 1}, #Missing value
+    }
+
 class BaseInvalidLineTest(unittest.TestCase):
     def test_padding0(self):
         with self.assertRaises(ValueError):

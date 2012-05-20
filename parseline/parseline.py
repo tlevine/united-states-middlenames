@@ -11,7 +11,7 @@ DATE_COMPONENTS =  {
 }
 
 SSN = re.compile(r'^[0-9]+$')
-NAMES = re.compile(r'^[A-Z ]+$')
+NAMES = re.compile(r'^[A-Z-. ]+$')
 DATETIMES = re.compile(r'^[0-9]+$')
 LINELENGTH = 100
 

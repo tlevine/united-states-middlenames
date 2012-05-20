@@ -59,12 +59,32 @@ and a forename collection that has counts of surnames by forename.
 
 
 ### Resulting table
-This all leads to a table like this.
+This all leads to a table like this, proably stored in SQLite.
 
-    ssn,       state, born.date,  died.date,  born.dow, died.dow, born.doy,   died.doy,
-    123456789, KY,    1930-02-10, 1978-03-07, mon,      tue,      2000-02-10, 2000-03-07,
+    ssn,       born.date,  died.date,  born.dow, died.dow, born.doy,   died.doy,   state, forename, surname, middles, middles.count
+    123456789, 1930-02-10, 1978-03-07, mon,      tue,      2000-02-10, 2000-03-07, KY,    Mohommad, Lee,     N,       1,
 
 "dow" refers to "day of week". "doy" refers to "day of year", but
 it's just the date switched to a stardard leap year like so (in R).
 
     doy <- as.POSIXct(paste('2000', substring('1999-02-28', 5), sep=''))
+
+"middles" refers to middle initials, and "middles.count" is how many
+there are.
+
+#### Missing dates
+If the year is missing and the month and day are available, the dates
+will be NAs.
+
+    ssn,       born.date, died.date, born.dow, died.dow, born.doy,   died.doy,   state, forename, surname, middles, middles.count
+    123456789, NA,        NA,        mon,      tue,      2000-02-10, 2000-03-07, KY,    Mohommad, Lee,     N,       1,
+
+If only the day of the month is missing, the date will use the 15th
+day of the month. This is equivalent to the middle day of the month
+rounded down, except for February, where it is the day after the middle
+day, rounded down. Also, the days of the week will be missing.
+
+    ssn,       born.date,  died.date,  born.dow, died.dow, born.doy,   died.doy,   state, forename, surname, middles, middles.count
+    123456789, 1930-02-15, 1978-03-15, NA,       NA,       2000-02-15, 2000-03-15, KY,    Mohommad, Lee,     N,       1,
+
+

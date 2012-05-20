@@ -11,9 +11,10 @@ DATE_COMPONENTS =  {
 }
 
 SSN = re.compile(r'^[0-9]+$')
-NAMES = re.compile(r'''^[A-Z0-9 '-.,]+$''')
 DATETIMES = re.compile(r'^[0-9]+$')
 LINELENGTH = 100
+
+FUNNYNAMES = re.compile(r'''[^A-Z '-.,]''')
 
 SPACES = set(' ')
 
@@ -100,6 +101,10 @@ def parseline(line):
         doc['parse_errors'].extend(errors)
 
     names = filter(None, line[10:65].split(' '))
+
+    # Does the name have weird characters?
+    doc['funny_names'] = not bool(re.match(FUNNYNAMES, names))
+
     if names[0][-1] == ',':
         doc['suffix'] = names.pop(1) # Remove the suffix
         names[0] = names[0][:-1] # Remove the comma.
@@ -135,9 +140,6 @@ def check_line(line):
     if not re.match(SSN, ssn):
         errors.append('"%s" doesn\'t look like a social security number.' % ssn)
         
-    if not re.match(NAMES, names):
-        errors.append('Something\'s wrong with this name: %s.' % names)
-
     if not re.match(DATETIMES, datetimes):
         errors.append('Something\'s wrong with the datetimes.')
 

@@ -9,15 +9,15 @@ def process_date(datedict, datetype):
     keys = set(datedict.keys())
     if keys == {'year', 'month', 'day'}:
         out = {
-            datetype + '.date'] = datetime.date(date['year'], date['month'], date['day'])
-            datetype + '.dow'] = out[datetype + '.date'].strftime('%a')
-        #   datetype + '.doy'] = None
+            datetype + '.date': datetime.date(date['year'], date['month'], date['day']),
+            datetype + '.dow': out[datetype + '.date'].strftime('%a'),
+        #   datetype + '.doy': None,
         }
     elif keys == {'month', 'year'}:
         out = {
-            datetype + '.date'] = datetime.date(date['year'], date['month'], 15)
-        #   datetype + '.dow'] = None
-            datetype + '.doy'] = out[datetype + '.date'].strftime('%j')
+            datetype + '.date': datetime.date(date['year'], date['month'], 15),
+        #   datetype + '.dow': None,
+            datetype + '.doy': out[datetype + '.date'].strftime('%j'),
         }
     elif keys == {'month', 'day'}:
         out = {

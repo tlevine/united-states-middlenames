@@ -3,13 +3,13 @@ import zmq
 from pymongo import Connection
 
 from ssn_locations import ssn_to_state
-from dates import process_dates
+from dates import process_date
 
 context = zmq.Context()
 receiver = context.socket(zmq.PULL)
 receiver.connect("tcp://desk:5557")
 
-connection = Connection()
+connection = Connection('desk')
 db = connection.middlenames
 
 def process(deathfile_doc):

@@ -21,6 +21,7 @@ def _parsedate(datestring):
     'Parse a date in the format that the death file uses.'
     result = {'year': None, 'month': None, 'day': None}
     components = {k: int(datestring.__getslice__(*DATE_COMPONENTS[k])) for k in DATE_COMPONENTS.keys()}
+    errors = []
 
     try:
         # All is well.
@@ -39,9 +40,9 @@ def _parsedate(datestring):
         elif (not components['year']) and components['month'] and components['day']:
             # Only year missing
             try:
-                datetime.date(1900, components['month'], components['day'])
+                datetime.date(2012, components['month'], components['day']) # Leap year
             except ValueError:
-                pass
+                errors.append('Invalid month-day combination')
             else:
                 result.update({'month': components['month'], 'day': components['day']})
 
@@ -50,15 +51,24 @@ def _parsedate(datestring):
             try:
                 datetime.date(components['year'], components['month'], 1)
             except ValueError:
-                raise
+                errors.append('Invalid year-month combination')
             else:
                 result.update({'year': components['year'], 'month': components['month']})
+
+        elif components['year'] and components['month'] and (not components['day']):
+            # Only month available
+            if 1 <= components['month'] <= 12:
+                result['month'] = components['month']
 
         else:
             try:
                 # Is it the day after the last day?
                 date = datetime.date(components['year'], components['month'], components['day'] - 1)
             except:
+                msg = 'This date string is too weird: ' +\
+                    '{year:04}-{month:02}-{day:02}'.format(**components)
+
+            else:
                 msg = 'The day is one day after the end of the month' +\
                      ' so I used the last day of the month.'
 
@@ -67,13 +77,10 @@ def _parsedate(datestring):
                     'month': components['month'],
                     'day': components['day'] - 1,
                 })
-            else:
-                msg = 'This date string is too weird: ' +\
-                    '{year:04}-{month:02}-{day:02}'.format(**components)
 
-            raise ValueError(msg)
+            errors.append(msg)
 
-    return result
+    return result, errors
 
 def parseline(line):
     'Parse a line of the death file.'
@@ -86,12 +93,8 @@ def parseline(line):
     doc['ssn'] = line[1:10]
 
     for key, indices in [('bord', (73, 81)), ('died', (65, 73))]:
-        try:
-            doc[key] = _parsedate(line.__getslice__(*indices))
-        except ValueError, msg:
-            doc['parse_errors'].append(str(msg))
-            print msg
-            print line
+        doc[key], errors = _parsedate(line.__getslice__(*indices))
+        doc['parse_errors'].extend(errors)
 
     names = filter(None, line[10:65].split(' '))
     if names[0][-1] == ',':

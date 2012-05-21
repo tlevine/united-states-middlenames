@@ -44,8 +44,4 @@ def process_date(datedict, datetype):
             datetype + '_doy': None,
         }
 
-    if datedict['month'] != None:
-        fakedate = datetime.date(2000, datedict['month'], 1)
-        out[datetype + '_month'] = fakedate.strftime('%b')
-
     return out

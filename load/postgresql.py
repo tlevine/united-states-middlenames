@@ -1,0 +1,23 @@
+#!/usr/bin/env python2
+import psycopg2
+from readfiles import readfiles
+
+connection = psycopg2.connect('dbname=tlevine user=tlevine')
+cursor = connection.cursor()
+
+def schema():
+    cursor.execute('''
+CREATE TABLE IF NOT EXISTS person_raw (
+  ssn character(9),      -- Social security number
+  rawline character(100) -- Raw line of the file
+)''')
+    connection.commit()
+
+def store_in_db(rawline):
+    'Save a particular line to the database.'
+     ssn = rawline[1:10]
+     cursor.execute('INSERT INTO person_raw (ssn,rawline) VALUES (%s, %s)', (ssn, rawline))
+
+if __name__ == '__main__':
+    schema()
+    readfiles(store_in_db)

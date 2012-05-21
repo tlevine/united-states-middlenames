@@ -22,9 +22,6 @@ def process(rawline):
     return doc
 
 while True:
-    print('Receiveng')
     rawline = str(receiver.recv(), 'utf-8')
-    print('Processing')
     doc = process(rawline)
-
-    print('Saving')
+    print(doc)

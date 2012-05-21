@@ -1,9 +1,9 @@
 CREATE TYPE weekday AS ENUM (
-  'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'
+  'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
 );
 CREATE TYPE month AS ENUM (
-  'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul',
-  'aug', 'sep', 'oct', 'nov', 'dec'
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+  'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 );
 
 CREATE TABLE person_raw (

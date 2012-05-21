@@ -68,7 +68,7 @@ LOCATIONS = [
 ]
 
 high_values = {k[1]:v for k,v in LOCATIONS}
-high_keys = high_values.keys(); high_keys.sort()
+high_keys = list(high_values.keys()); high_keys.sort()
 
 def ssn_to_state(ssn):
     return high_values[high_keys[bisect_left(high_keys, ssn[:3])]]

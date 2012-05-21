@@ -4,7 +4,7 @@ import psycopg2
 
 from ssn_locations import ssn_to_state
 from dates import process_date
-from parseline import parseline
+from initial import parseline
 
 context = zmq.Context()
 receiver = context.socket(zmq.PULL)
@@ -15,44 +15,46 @@ cursor = connection.cursor()
 
 def process(rawline):
     doc = {}
-    doc.update(parseline)
+    doc.update(parseline(rawline))
 
     for datetype in ['born', 'died']:
-        doc.update(process_date(deathfile_doc[datetype], datetype))
+        doc.update(process_date(doc[datetype], datetype))
 
-    doc['state'] = ssn_to_state(deathfile_doc['ssn'])
-    doc['middles_count'] = len(deathfile_doc['middles'])
+    doc['state'] = ssn_to_state(doc['ssn'])
+    doc['middles_count'] = len(doc['middles'])
 
     return doc
 
 while True:
     rawline = str(receiver.recv(), 'utf-8')
     doc = process(rawline)
+
+    print(doc)
     cursor.execute('''
 INSERT INTO person VALUES (
-  %(ssn),
+  %(ssn)s,
 
-  %(forename),
-  %(surname),
-  %(middles),
+  %(forename)s,
+  %(surname)s,
+  %(middles)s,
 
-  %(born_year),
-  %(died_year),
-  %(born_month),
-  %(died_month),
-  %(born_day),
-  %(died_day),
+  %(born_year)s,
+  %(died_year)s,
+  %(born_month)s,
+  %(died_month)s,
+  %(born_day)s,
+  %(died_day)s,
 
-  %(born_date),
-  %(died_date),
+  %(born_date)s,
+  %(died_date)s,
 
-  %(born_dow),
-  %(died_dow),
+  %(born_dow)s,
+  %(died_dow)s,
 
-  %(born_doy),
-  %(died_doy),
+  %(born_doy)s,
+  %(died_doy)s,
 
-  %(state),
-  %(middles_count)
-)''')
-    cursor.commit()
+  %(state)s,
+  %(middles_count)s
+)''', doc)
+    connection.commit()

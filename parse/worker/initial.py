@@ -1,5 +1,4 @@
 'Import the death file into a MongoDB.'
-from unittest import TestCase
 import datetime
 import re
 
@@ -17,10 +16,13 @@ FUNNYNAMES = re.compile(r'''[^A-Z '-.,]''')
 
 SPACES = set(' ')
 
+def _dateslice(datestring, k):
+    return datestring[DATE_COMPONENTS[k][0]: DATE_COMPONENTS[k][1]]
+
 def _parsedate(datestring):
     'Parse a date in the format that the death file uses.'
     result = {'year': None, 'month': None, 'day': None}
-    components = {k: int(datestring.__getslice__(*DATE_COMPONENTS[k])) for k in DATE_COMPONENTS.keys()}
+    components = {k: int(_dateslice(datestring, k)) for k in DATE_COMPONENTS.keys()}
     errors = []
 
     try:
@@ -96,11 +98,15 @@ def parseline(line):
     doc['ssn'] = line[1:10]
 
     for key, indices in [('born', (73, 81)), ('died', (65, 73))]:
-        doc[key], errors = _parsedate(line.__getslice__(*indices))
+        datestuff, errors = _parsedate(line[indices[0]: indices[1]])
+        for time_level in ['year', 'month', 'day']:
+            doc[key] = datestuff
+            doc[key + '_' + time_level] = datestuff[time_level]
+
         doc['parse_errors'].extend(errors)
 
     namesstring = line[10:65]
-    names = filter(None, namesstring.split(' '))
+    names = list(filter(None, namesstring.split(' ')))
 
     # Does the name have weird characters?
     doc['funny_names'] = not bool(re.match(FUNNYNAMES, namesstring))

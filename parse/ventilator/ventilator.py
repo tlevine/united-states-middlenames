@@ -12,4 +12,4 @@ sender.bind("tcp://*:5557")
 # Send out all of the lines.
 cursor.execute('select rawline from person_raw limit 100')
 for record in cursor:
-    sender.send(record[0]))
+    sender.send(record[0])

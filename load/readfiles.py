@@ -1,6 +1,5 @@
-import os
-from postgresql import store_in_db as store_postgres
-from mongodb import store_in_db as store_mongo
+#!/usr/bin/env python2
+import sys, os
 
 def readfiles(directory, loadfunc):
     'Go throug all of the files and import everything.'
@@ -16,8 +15,12 @@ if not os.path.isdir(directory):
     raise IOError('You must pass a directory containing the death files as the only argument.')
 
 if db == 'postgres':
+    from postgresql import store_in_db as store_postgres
     store_in_db = store_postgres
-if db == 'mongo':
+elif db == 'mongo':
+    from mongodb import store_in_db as store_mongo
     store_in_db = store_mongo
+else:
+    raise ValueError('The second argument, database, must be "postgres" or "mongo".')
 
 readfiles(directory, store_in_db)

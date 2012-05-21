@@ -1,6 +1,5 @@
 #!/usr/bin/env python2
 import psycopg2
-import sys, os
 
 connection = psycopg2.connect('dbname=middlenames user=tlevine')
 cursor = connection.cursor()

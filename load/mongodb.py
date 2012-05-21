@@ -1,9 +1,7 @@
 #!/usr/bin/env python2
 import pymongo
-import sys, os
-from readfiles import readfiles
 
-connection = psycopg2.Connection('desk')
+connection = pymongo.Connection('desk')
 db = connection.middlenames
 
 def store_in_db(rawline):

@@ -26,10 +26,12 @@ def process(rawline):
     return doc
 
 while True:
+    print('Receiveng')
     rawline = str(receiver.recv(), 'utf-8')
+    print('Processing')
     doc = process(rawline)
 
-    print(doc)
+    print('Saving')
     cursor.execute('''
 INSERT INTO person VALUES (
   %(ssn)s,
@@ -57,4 +59,5 @@ INSERT INTO person VALUES (
   %(state)s,
   %(middles_count)s
 )''', doc)
+    cursor.execute('UPDATE person_raw SET (parsed) = (TRUE)')
     connection.commit()

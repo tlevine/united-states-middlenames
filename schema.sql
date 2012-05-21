@@ -49,8 +49,8 @@ CREATE TABLE person (
   middles_initials_count smallint NOT NULL -- How many middle initials
 );
 
-CREATE INDEX surname ON person (surname)
-CREATE INDEX forename ON person (forename)
+CREATE INDEX surname ON person (surname);
+CREATE INDEX forename ON person (forename);
 
 CREATE INDEX born ON person (born_date);
 CREATE INDEX died ON person (died_date);

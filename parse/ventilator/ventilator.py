@@ -1,8 +1,8 @@
 #!/usr/bin/env python2
-from pymongo import Connection
 import zmq
+import psycopg2
 
-connection = psycopg2.connect('dbname=tlevine user=tlevine')
+connection = psycopg2.connect('dbname=middlenames user=tlevine host=desk')
 cursor = connection.cursor()
 
 context = zmq.Context()

@@ -1,6 +1,6 @@
 CREATE TABLE person_raw (
-  ssn character(9) PRIMARY KEY, -- Social security number
-  rawline character(100) NOT NULL,       -- Raw line of the file
+  ssn character(9) PRIMARY KEY,   -- Social security number
+  rawline character(100) NOT NULL -- Raw line of the file
 )
 
 CREATE TABLE person (
@@ -42,5 +42,5 @@ CREATE TABLE person (
   died_doy date,
 
   state character(2) NOT NULL, -- Geographical state of registration
-  middles_initials_count smallint NOT NULL, -- How many middle initials
+  middles_initials_count smallint NOT NULL -- How many middle initials
 )

@@ -1,9 +1,12 @@
 #!/usr/bin/env python2
-from pymongo import Connection
 from parseline import parseline
+import psycopg2
 
-connection = Connection()
-db = connection.middlenames
+connection = psycopg2.connect('dbname=middlenames user=tlevine')
+cursor = connection.cursor(r
+
+def schema():
+    cursor.execute('CREATE TABLE IF NOT EXISTS 
 
 def load():
     'Go throug all of the files and import everything.'

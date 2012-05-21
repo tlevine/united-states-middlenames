@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from bisect import bisect_left
 
 LOCATIONS = [
@@ -62,9 +63,20 @@ LOCATIONS = [
     (('596', '599'), 'PR'), # Puerto Rico
     (('600', '601'), 'AZ'),
     (('602', '626'), 'CA'),
+
+    (('627', '699'), 'unassigned'), #for future use
+    (('700', '728'), 'railroad'), #Railroad workers through 1963, then discontinued
+    (('729', '899'), 'unassigned'), #for future use
+    (('900', '999'), 'invalid') #**
+
     # * Guam, American Samoa,
     # Northern Mariana Islands,
     # Philippine Islands
+
+    # ** not valid SSNs, but were used for program purposes
+    # when state aid to the aged, blind and disabled was
+    # converted to a federal program administered by SSA.
+
 ]
 
 high_values = {k[1]:v for k,v in LOCATIONS}
@@ -78,3 +90,9 @@ def tests():
     fixtures = [('000', 'unused'), ('581', 'PR'), ('584', 'PR'), ('446', 'OK'), ('626', 'CA')]
     for ssn, state in fixtures:
         assert ssn_to_state(ssn) == state
+
+
+if __name__ == '__main__':
+    import sys
+    print(ssn_to_state(sys.argv[1]))
+    tests()

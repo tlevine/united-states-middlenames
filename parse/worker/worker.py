@@ -5,6 +5,8 @@ from ssn_locations import ssn_to_state
 from dates import process_date
 from initial import parseline
 
+from mongo import savedoc
+
 context = zmq.Context()
 receiver = context.socket(zmq.PULL)
 receiver.connect("tcp://desk:5557")
@@ -22,9 +24,6 @@ def process(rawline):
     return doc
 
 while True:
-    print('Receiveng')
     rawline = str(receiver.recv(), 'utf-8')
-    print('Processing')
     doc = process(rawline)
-
-    print('Saving')
+    savedoc(doc)

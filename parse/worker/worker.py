@@ -27,4 +27,3 @@ while True:
     rawline = str(receiver.recv(), 'utf-8')
     doc = process(rawline)
     savedoc(doc)
-    print(doc)

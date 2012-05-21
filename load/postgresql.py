@@ -1,7 +1,6 @@
 #!/usr/bin/env python2
 import psycopg2
 import sys, os
-from readfiles import readfiles
 
 connection = psycopg2.connect('dbname=middlenames user=tlevine')
 cursor = connection.cursor()
@@ -15,9 +14,3 @@ def store_in_db(rawline):
         connection.rollback()
     else:
         connection.commit()
-
-if __name__ == '__main__':
-    directory = sys.argv[1]
-    if not os.path.isdir(directory):
-        raise IOError('You must pass a directory containing the death files as the only argument.')
-    readfiles(directory, store_in_db)

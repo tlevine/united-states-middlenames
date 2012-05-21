@@ -7,8 +7,9 @@ CREATE TYPE month AS ENUM (
 );
 
 CREATE TABLE person_raw (
-  ssn character(9) PRIMARY KEY,   -- Social security number
-  rawline character(100) NOT NULL -- Raw line of the file
+  ssn character(9) PRIMARY KEY,    -- Social security number
+  rawline character(100) NOT NULL, -- Raw line of the file
+  parsed boolean NOT NULL          -- Has this been processed further?
 );
 
 CREATE TABLE person (

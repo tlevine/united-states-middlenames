@@ -10,7 +10,7 @@ def store_in_db(rawline):
     'Save a particular line to the database.'
     ssn = rawline[1:10]
     try:
-        cursor.execute('INSERT INTO person_raw (ssn,rawline) VALUES (%s, %s)', (ssn, rawline))
+        cursor.execute('INSERT INTO person_raw (ssn,rawline) VALUES (%s, %s, FALSE)', (ssn, rawline))
     except psycopg2.IntegrityError:
         connection.rollback()
     else:

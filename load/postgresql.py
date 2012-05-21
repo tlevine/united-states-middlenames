@@ -3,13 +3,14 @@ import psycopg2
 import sys, os
 from readfiles import readfiles
 
-connection = psycopg2.connect('dbname=tlevine user=tlevine')
+connection = psycopg2.connect('dbname=middlenames user=tlevine')
 cursor = connection.cursor()
 
 def store_in_db(rawline):
     'Save a particular line to the database.'
     ssn = rawline[1:10]
     cursor.execute('INSERT INTO person_raw (ssn,rawline) VALUES (%s, %s)', (ssn, rawline))
+    connection.commit()
 
 if __name__ == '__main__':
     directory = sys.argv[1]

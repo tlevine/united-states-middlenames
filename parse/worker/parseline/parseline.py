@@ -3,7 +3,6 @@ from unittest import TestCase
 import datetime
 import re
 
-
 DATE_COMPONENTS =  {
     'year': [4, 8],
     'month': [0, 2],

@@ -1,42 +1,65 @@
 #!/usr/bin/env python
 import zmq
-from pymongo import Connection
 
 from ssn_locations import ssn_to_state
 from dates import process_date
+from parseline import parseline
 
 context = zmq.Context()
 receiver = context.socket(zmq.PULL)
 receiver.connect("tcp://desk:5557")
 
-connection = Connection('desk')
-db = connection.middlenames
+connection = psycopg2.connect('dbname=tlevine user=tlevine')
+cursor = connection.cursor()
 
-def process(deathfile_doc):
-    watermelon_doc = {
-        '_id': deathfile_doc['_id'],
-    }
+def schema():
+    cursor.execute('''
+CREATE TABLE IF NOT EXISTS person (
+  ssn character(9),   -- Social security number
+
+  forename varchar(55),
+  surname varchar(55),
+  middles varchar(55),
+
+  -- Date components
+  born_year smallint,
+  died_year smallint,
+  born_month smallint,
+  died_month smallint,
+  born_day smallint,
+  died_day smallint,
+
+  -- The above date as a proper date
+  born_date date,
+  died_date date,
+
+  -- Day of the week (0, 1, 2, 3, 4, 5 or 6)
+  born_dow smallint,
+  died_dow smallint,
+
+  -- Date in the year 2000, in case the year is not known
+  born_doy date,
+  died_doy date,
+
+  state character(2), -- Geographical state of registration
+  middles_initials_count smallint, -- How many middle initials
+
+  UNIQUE(ssn)
+);''')
+
+def process(rawline):
+    doc = {}
+    doc.update(parseline)
 
     for datetype in ['born', 'died']:
-        watermelon_doc.update(process_date(deathfile_doc[datetype], datetype))
+        doc.update(process_date(deathfile_doc[datetype], datetype))
 
-    watermelon_doc['state'] = ssn_to_state(deathfile_doc['ssn'])
-    watermelon_doc['middles_count'] = len(deathfile_doc['middles'])
+    doc['state'] = ssn_to_state(deathfile_doc['ssn'])
+    doc['middles_count'] = len(deathfile_doc['middles'])
 
-    return watermelon_doc
+    return doc
 
 while True:
-    # Get the document
-    _id = str(receiver.recv(), 'utf-8')
-    doc = db.deathfile.find_one({'_id': _id})
-
-#   # Skip if we've already done this batch of processing.
-#   watermelon = doc.get('watermelon', {})
-#   if watermelon != {}:
-#       continue # Already processed
-
-#   # Otherwise, process it
-#   command = {'watermelon': process(doc)}
-#   db.deathfile.update({'_id': doc['_id']}, command)
-
-    db.watermelon.save(process(doc))
+    rawline = str(receiver.recv(), 'utf-8')
+    doc = process(rawline)
+    

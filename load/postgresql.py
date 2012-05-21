@@ -9,8 +9,9 @@ cursor = connection.cursor()
 def schema():
     cursor.execute('''
 CREATE TABLE IF NOT EXISTS person_raw (
-  ssn character(9),      -- Social security number
-  rawline character(100) -- Raw line of the file
+  ssn character(9),       -- Social security number
+  rawline character(100), -- Raw line of the file
+  UNIQUE(ssn)
 )''')
     connection.commit()
 

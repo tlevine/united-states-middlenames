@@ -10,6 +10,6 @@ sender = context.socket(zmq.PUSH)
 sender.bind("tcp://*:5557")
 
 # Send out all of the lines.
-cursor.execute('select rawline from person_raw where NOT parsed limit 100')
+cursor.execute('select rawline from person_raw where not parsed limit 100')
 for record in cursor:
     sender.send(record[0])

@@ -8,7 +8,7 @@ db.runCommand(
      // k = Number of people born with middle names
      // n = Number of people born, with or without middle names
      var k = 0;
-     values.forEach(k++);
+     values.forEach(function(){k++});
      return {"k": k, n: values.length};
    },
    out: "middle_name_counts",

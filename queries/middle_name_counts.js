@@ -14,7 +14,7 @@ db.runCommand(
      });
      return result;
    },
-   out: "middle_name_counts",
+   out: { inline: 1 },
    jsMode : true,
    verbose : true
  }

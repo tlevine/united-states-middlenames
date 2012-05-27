@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 library(ggplot2)
 
-# read.csv('../queries/middlenames.csv')
-m.all <- read.csv('/tmp/middlenames.csv') # In RAM
+m.all <- read.csv('../queries/middlenames.csv')
+#m.all <- read.csv('/tmp/middlenames.csv') # In RAM
 m.all <- na.omit(m.all)
 #m.all <- subset(m.all, n >= 10)
 
@@ -30,14 +30,24 @@ timelines <- dlply(m.all, 'state', function(m.df) {
 timelines$all <- m.timeline(m.all)
 
 # A book to flip through
-pdf('middle_names_over_time_by_state.pdf',
-  width=17, height=11,
-  fonts='Helvetica', family='Helvetica'
-)
-print(timelines)
-dev.off()
+m.book <- function(){
+  pdf('middle_names_over_time_by_state.pdf',
+    width=17, height=11,
+    fonts='Helvetica', family='Helvetica'
+  )
+  print(timelines)
+  dev.off()
+}
 
-# A cover image
-png('middle_names_over_time_by_state.png', width=1680, height=1050)
-print(timelines$all) 
-dev.off()
+# A flashy image to put in a blog post
+m.flashy <- function(width=1680, height=1050){
+  png(paste('middle_names_over_time_by_state', width, height, 'png', sep='.'),
+    width=width, height=height)
+  print(timelines$all) 
+  dev.off()
+}
+
+m.flashy(1680, 1050)
+m.flashy(1280, 720)
+m.flashy(800, 640)
+m.flashy(640, 480)

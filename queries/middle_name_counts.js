@@ -1,7 +1,7 @@
 db.runCommand(
  { mapreduce : "person",
    map : function() {emit(
-     [this.born_year, this.born_state],
+     [this.born_year, this.state],
      {'k': this.middles.length > 0, 'n': 1}
    )},
    reduce : function(key, values) {

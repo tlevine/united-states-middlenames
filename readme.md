@@ -46,37 +46,38 @@ Person-level features are extracted and stored them in the `person`
 collection, which is indexed on SSN.
 
 One of these documents looks like this
-{
-  "_id" : "001010001",
-  "died_dow" : null,
-  "surname" : "MUZZEY",
-  "forename" : "GRACE",
-  "died_doy" : null,
-  "born" : {
-    "month" : 4,
-    "day" : 16,
-    "year" : 1902
-  },
-  "born_dow" : "Wed",
-  "died_month" : "Deathec",
-  "born_doy" : ISODate("2000-04-16T00:00:00Z"),
-  "died_day" : null,
-  "born_month" : "Apr",
-  "died_date" : ISODate("1975-12-15T00:00:00Z"),00"state" : "NH",
-  "born_year" : 1902,
-  "parse_errors" : [ ],
-  "died_year" : 1975,
-  "ssn" : "001010001",
-  "died" : {
-    "month" : 12,
-    "year": 1975
-  },
-  "middles_count" : 0,
-  "funny_names" : true,
-  "middles" : [ ],
-  "born_date" : ISODate("1902-04-16T00:00:00Z"),
-  "born_day" : 16
-}
+
+    {
+      "_id" : "001010001",
+      "died_dow" : null,
+      "surname" : "MUZZEY",
+      "forename" : "GRACE",
+      "died_doy" : null,
+      "born" : {
+        "month" : 4,
+        "day" : 16,
+        "year" : 1902
+      },
+      "born_dow" : "Wed",
+      "died_month" : "Deathec",
+      "born_doy" : ISODate("2000-04-16T00:00:00Z"),
+      "died_day" : null,
+      "born_month" : "Apr",
+      "died_date" : ISODate("1975-12-15T00:00:00Z"),00"state" : "NH",
+      "born_year" : 1902,
+      "parse_errors" : [ ],
+      "died_year" : 1975,
+      "ssn" : "001010001",
+      "died" : {
+        "month" : 12,
+        "year": 1975
+      },
+      "middles_count" : 0,
+      "funny_names" : true,
+      "middles" : [ ],
+      "born_date" : ISODate("1902-04-16T00:00:00Z"),
+      "born_day" : 16
+    }
 
 ### Simple transformations
 
